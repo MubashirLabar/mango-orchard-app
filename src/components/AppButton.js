@@ -13,13 +13,13 @@ const AppButton = ({
       ? "bg-transparent border-0"
       : type === "hole"
       ? "bg-transparent"
-      : "bg-primary-700";
+      : "bg-black-700";
 
   const _textStyle =
     type === "transparent"
       ? "text-black-700"
       : type === "hole"
-      ? "text-primary-700"
+      ? "text-black-700"
       : "";
 
   return (

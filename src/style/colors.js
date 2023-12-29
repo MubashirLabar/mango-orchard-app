@@ -12,7 +12,7 @@ module.exports = {
   },
 
   primary: {
-    700: "#000000",
+    700: "#FFD93A",
   },
 
   secondary: {

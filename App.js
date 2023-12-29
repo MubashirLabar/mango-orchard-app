@@ -1,8 +1,10 @@
 import { View } from "react-native";
 import { useFonts } from "expo-font";
 import Toast, { SuccessToast, ErrorToast } from "react-native-toast-message";
+import { Provider } from "react-redux";
 import RootNavigation from "./src/navigation/RootNavigation";
 import colors from "./src/style/colors";
+import store from "./src/store";
 
 export default function App() {
   const [loadedFonts] = useFonts({
@@ -97,7 +99,9 @@ export default function App() {
       <View className="z-[9999]">
         <Toast config={toastConfig} />
       </View>
-      <RootNavigation />
+      <Provider store={store}>
+        <RootNavigation />
+      </Provider>
     </View>
   );
 }

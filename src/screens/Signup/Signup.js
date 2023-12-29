@@ -5,7 +5,6 @@ import { Formik } from "formik";
 import colors from "style/colors";
 import routes from "navigation/routes";
 import Toast from "react-native-toast-message";
-import { useDispatch } from "react-redux";
 import {
   AppText,
   TextField,
@@ -13,15 +12,11 @@ import {
   AppButton,
   ErrorMessage,
 } from "components";
-import { setToStorage } from "utils/common";
 import { loginValidation } from "utils/validations/authValidations";
-import { setIsUser } from "../../store/reducers/authReducer";
 import { auth } from "../../config/firebase";
 
-export default function Login({ navigation }) {
-  const dispatch = useDispatch();
+export default function Signup({ navigation }) {
   const [showPassword, setShowPassword] = useState(true);
-  const [loading, setLoading] = useState(false);
 
   const initialValues = {
     password: "",
@@ -29,27 +24,14 @@ export default function Login({ navigation }) {
   };
 
   const submitForm = async (values) => {
-    setLoading(true);
     try {
-      const res = await auth.signInWithEmailAndPassword(
-        values.email,
-        values.password
-      );
-      setToStorage("isUser", "true");
-      dispatch(setIsUser("true"));
-      setLoading(false);
-      navigation.navigate(routes.MAIN_SCREEN);
-      Toast.show({
-        type: "success",
-        text1: "Login Successfully!",
-      });
+      await auth.createUserWithEmailAndPassword(values.email, values.password);
     } catch (error) {
       Toast.show({
         type: "error",
         text1: "Something want wrong!",
       });
       console.error(error.message);
-      setLoading(false);
     }
   };
 
@@ -73,11 +55,9 @@ export default function Login({ navigation }) {
               <View className="w-full py-8 px-4">
                 <View className="mb-8">
                   <AppText className="font-Bold text-[28px] leading-[40px] text-black-700 mb-2">
-                    Sign In
+                    Sign Up
                   </AppText>
-                  <AppText className="text-[18px]">
-                    Please enter your credentials to proceed
-                  </AppText>
+                  <AppText className="text-[18px]">Create your account</AppText>
                 </View>
                 <View className="w-full gap-6 mb-8">
                   <View className="w-full flex">
@@ -126,9 +106,8 @@ export default function Login({ navigation }) {
             </ScrollView>
             <View className="flex flex-row py-3 px-5">
               <AppButton
-                label="Sign In"
+                label="Sign Up"
                 className="mb-6"
-                isLoading={loading}
                 onPress={handleSubmit}
               />
             </View>

@@ -1,49 +1,37 @@
 import { useEffect, useState } from "react";
-
 import { ScrollView, View, Image, ActivityIndicator } from "react-native";
 import { AppText } from "components";
 import Ionic from "react-native-vector-icons/Ionicons";
 import Entypo from "react-native-vector-icons/Entypo";
-import { firebase } from "../../config/firebase";
-import axios from "axios";
+import { db } from "../../config/firebase";
+import { onValue, ref } from "firebase/database";
 
 function HomeScreen() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     const data = [];
-    //     const ref = await db.collection("users");
-    //     const snapshot = await ref.get();
-    //     snapshot.forEach((doc) => {
-    //       console.log(doc.id, "=>", doc.data());
-    //       data.push(doc.data());
-    //     });
+    const query = ref(db, "DHT");
 
-    //     console.log("data....", data);
-    //   } catch (e) {
-    //     console.log("error.......", e.message);
-    //   }
-    // };
+    return onValue(query, (snapshot) => {
+      const data = snapshot.val();
 
-    const getData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          "https://mangoorached-default-rtdb.asia-southeast1.firebasedatabase.app/DHT.json"
-        );
-        setData(response.data);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        console.error("Error fetching data:", error);
+      if (snapshot.exists()) {
+        if (Object.keys(data).length) {
+          setData({
+            temperature: data.temperature,
+            humidity: data.humidity,
+            heat_index: data.Heat_index,
+          });
+        } else {
+          setData({
+            temperature: 0,
+            humidity: 0,
+            heat_index: 0,
+          });
+        }
       }
-    };
-
-    getData();
-    // fetchData();
+    });
   }, []);
 
   return (
