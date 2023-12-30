@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
 import { ScrollView, View, Image, ActivityIndicator } from "react-native";
-import { AppText } from "components";
+import { AppText, AppButton } from "components";
 import Ionic from "react-native-vector-icons/Ionicons";
 import Entypo from "react-native-vector-icons/Entypo";
 import { db } from "../../config/firebase";
 import { onValue, ref } from "firebase/database";
+import { usePushNotifications } from "components/PushNotificationManager";
 
 function HomeScreen() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const { schedulePushNotification } = usePushNotifications();
+
   useEffect(() => {
     const query = ref(db, "DHT");
 
-    return onValue(query, (snapshot) => {
+    return onValue(query, async (snapshot) => {
       const data = snapshot.val();
 
       if (snapshot.exists()) {
@@ -23,6 +26,9 @@ function HomeScreen() {
             humidity: data.humidity,
             heat_index: data.Heat_index,
           });
+          if (parseInt(data.temperature) < 7) {
+            await schedulePushNotification();
+          }
         } else {
           setData({
             temperature: 0,
@@ -103,6 +109,12 @@ function HomeScreen() {
               </View>
             </View>
           </View>
+          {/* <AppButton
+            label="Press to schedule a notification"
+            onPress={async () => {
+              await schedulePushNotification();
+            }}
+          /> */}
         </ScrollView>
       )}
     </View>
