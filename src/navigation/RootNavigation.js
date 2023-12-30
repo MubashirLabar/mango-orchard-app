@@ -4,8 +4,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import navigationTheme from "./navigationTheme";
 import routes from "./routes";
 import { useDispatch, useSelector } from "react-redux";
-import { getFromStorage } from "utils/common";
-// import { firebase } from "../config/firebase";
+import { getFromStorage, setToStorage } from "utils/common";
+import { auth } from "../config/firebase";
 import { setIsUser } from "../store/reducers/authReducer";
 
 import AuthNavigator from "./AuthNavigator";
@@ -29,7 +29,14 @@ function RootNavigation() {
     setLoading(false);
   };
 
+  const signOut = () => {
+    setToStorage("isUser", "");
+    dispatch(setIsUser(""));
+    auth.signOut();
+  };
+
   useEffect(() => {
+    // signOut();
     fetchUser();
   }, []);
 

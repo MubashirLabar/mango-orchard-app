@@ -1,6 +1,6 @@
 import { AppText } from "components";
 
-function ErrorMessage({ error, visible, className }) {
+function TextFieldError({ error, visible, className }) {
   if (!visible || !error) return null;
 
   return (
@@ -10,4 +10,4 @@ function ErrorMessage({ error, visible, className }) {
   );
 }
 
-export default ErrorMessage;
+export default TextFieldError;

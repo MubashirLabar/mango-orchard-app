@@ -6,13 +6,8 @@ import colors from "style/colors";
 import routes from "navigation/routes";
 import Toast from "react-native-toast-message";
 import { useDispatch } from "react-redux";
-import {
-  AppText,
-  TextField,
-  Touchable,
-  AppButton,
-  ErrorMessage,
-} from "components";
+import { AppText, TextField, Touchable, AppButton } from "components";
+import TextFieldError from "components/TextFieldError";
 import { setToStorage } from "utils/common";
 import { loginValidation } from "utils/validations/authValidations";
 import { setIsUser } from "../../store/reducers/authReducer";
@@ -31,10 +26,7 @@ export default function Login({ navigation }) {
   const submitForm = async (values) => {
     setLoading(true);
     try {
-      const res = await auth.signInWithEmailAndPassword(
-        values.email,
-        values.password
-      );
+      await auth.signInWithEmailAndPassword(values.email, values.password);
       setToStorage("isUser", "true");
       dispatch(setIsUser("true"));
       setLoading(false);
@@ -46,9 +38,9 @@ export default function Login({ navigation }) {
     } catch (error) {
       Toast.show({
         type: "error",
-        text1: "Something want wrong!",
+        text1: "Please enter correct login credentials",
       });
-      console.error(error.message);
+      console.log(error.message);
       setLoading(false);
     }
   };
@@ -89,7 +81,7 @@ export default function Login({ navigation }) {
                       onBlur={() => setFieldTouched("email")}
                       onChangeText={handleChange("email")}
                     />
-                    <ErrorMessage
+                    <TextFieldError
                       error={errors.email}
                       visible={touched.email}
                     />
@@ -116,7 +108,7 @@ export default function Login({ navigation }) {
                       onBlur={() => setFieldTouched("password")}
                       onChangeText={handleChange("password")}
                     />
-                    <ErrorMessage
+                    <TextFieldError
                       error={errors.password}
                       visible={touched.password}
                     />

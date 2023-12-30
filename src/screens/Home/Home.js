@@ -8,7 +8,7 @@ import { onValue, ref } from "firebase/database";
 
 function HomeScreen() {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const query = ref(db, "DHT");
@@ -31,6 +31,7 @@ function HomeScreen() {
           });
         }
       }
+      setLoading(false);
     });
   }, []);
 
@@ -91,7 +92,7 @@ function HomeScreen() {
             <View className="py-5 px-6 rounded-[16px] bg-[#FFD93A] flex flex-row items-center">
               <View className="flex flex-1">
                 <AppText className="font-Medium text-5xl text-black-700 mb-2">
-                  {data?.Heat_index ? data?.Heat_index.toFixed(2) : 0}
+                  {data?.heat_index ? data?.heat_index.toFixed(2) : 0}
                 </AppText>
                 <AppText className="font-Regular text-[20px]">
                   Heat Index

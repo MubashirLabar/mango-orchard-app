@@ -96,10 +96,8 @@ export default function App() {
 
   return (
     <View className="flex-1">
-      <View className="z-[9999]">
-        <Toast config={toastConfig} />
-      </View>
       <Provider store={store}>
+        <Toast config={toastConfig} />
         <RootNavigation />
       </Provider>
     </View>
