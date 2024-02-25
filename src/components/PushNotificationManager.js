@@ -43,7 +43,7 @@ export function usePushNotifications() {
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "Temperature Down",
-        body: "The temperature is below 12 degrees.",
+        body: "The temperature is below 7 degrees.",
         // data: { data: "goes here" },
       },
       trigger: { seconds: 2 },
